@@ -73,24 +73,67 @@ const FRAME2 = d3.select("#barplot")
 
 // open file for bar chart
 d3.csv("data/bar-data.csv").then((data) => { 
+	let xlab = ["A", "B", "C", "D", "E", "F", "G"]
 
-	 const MAX_X2 = d3.max(data, (d) => { return parseInt(d.x); });
+	const MAX_Y = d3.max(data, (d) => { return parseInt(d.amount); });
+	const Y_SCALE = d3.scaleLinear() 
+	                   .domain([0, (MAX_Y)])  
+	                   .range([0, VIS_HEIGHT]); 
 
-	 const X_SCALE2 = d3.scaleLinear() 
-	                   .domain([0, (MAX_X2 + 10000)]) // add some padding  
+	const Y_SCALE_REV = d3.scaleLinear() 
+	                   .domain([0, (MAX_Y)])  
+	                   .range([VIS_HEIGHT, 0]);
+
+
+	// const X_SCALE = d3.scaleBand() 
+	//                    .domain(xlab)  
+	//                    .range([0, VIS_WIDTH]); 
+
+	 const X_SCALE = d3.scalePoint() 
+	                   .domain(xlab)  
 	                   .range([0, VIS_WIDTH]); 
+
+	console.log(X_SCALE('A'))
+ 	console.log(X_SCALE('B'))
+ 	console.log(X_SCALE('C'))
+ 	console.log(X_SCALE('D'))
+ 	console.log(X_SCALE('E'))
+ 	console.log(X_SCALE('F'))
+ 	console.log(X_SCALE('G'))
+
+	 const BAR_WIDTH = 30
+	 const GAP = BAR_WIDTH / 4
+
+
 	// add the bars (rectangles) with styling
 	FRAME2.selectAll("bars")
 		.data(data)
 		.enter()
 		.append("rect")
-			.attr("x", (d) => d.amount)
-			.attr("y", 200)
-			.attr("height", (d) => d.amount)
-			.attr("width", 15)
+			.attr("x", (d) => (X_SCALE(d.categories)))
+			.attr("y", (d) =>  (VIS_HEIGHT - Y_SCALE(d.amount) + MARGINS.top))
+			.attr("height", (d) => Y_SCALE(d.amount))
+			.attr("width", BAR_WIDTH)
+			.attr("class", "bar");
 
+    // x axis for the bar plot
+	FRAME1.append("g") 
+        .attr("transform", "translate(" + MARGINS.left + 
+              "," + (VIS_HEIGHT+ MARGINS.bottom) + ")") 
+        .call(d3.axisBottom(X_SCALE).ticks(7)) 
+        .selectAll("text")
+          .attr("font-size", '20px')
+          .attr("transform", "translate(-10,0) rotate(-45)"); 
 
+     // Y axis for the bar plot
+	FRAME1.append("g") 
+        .attr("transform", "translate(" + MARGINS.left + 
+              "," + MARGINS.top + ")") 
+        .call(d3.axisLeft(Y_SCALE_REV).ticks(4)) 
+          .attr("font-size", '20px'); 
+});
 
+<<<<<<< HEAD
 	// axis for the bar plot
 	FRAME2.append("xy")
 			.attr("transform", "translate(" + MARGINS.left + 
@@ -100,6 +143,9 @@ d3.csv("data/bar-data.csv").then((data) => {
 
 })
 
+=======
+
+>>>>>>> fbfc0bf8db480c5da24cfade411eaedda4bf9dc0
 // function to add and remove border on click of a point
 function borderClick(ptID) {
 
@@ -150,4 +196,7 @@ function pointClick() {
 }
 
 document.getElementById("subButton").addEventListener("click", pointClick);
+<<<<<<< HEAD
 
+=======
+>>>>>>> fbfc0bf8db480c5da24cfade411eaedda4bf9dc0
