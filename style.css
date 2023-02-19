@@ -47,3 +47,21 @@ body {
 }
 
 
+/* tag styling the points of the graph */
+circle {
+	fill: blue;
+}
+
+circle:hover {
+	fill: red;
+}
+
+.stroke {
+	stroke: yellowgreen;
+	stroke-width: 2px;
+}
+
+/* tag styling the "Add point" button */
+button {
+	margin: 10px;
+}

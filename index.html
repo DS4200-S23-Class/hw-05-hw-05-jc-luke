@@ -23,11 +23,51 @@
             <div id="barplot">
                 
             </div>
+            <p></p>
         </div>
     </div>
 
-        <!-- create the right hand column -->
+        <!-- create the right hand column and add the dropdowns [1,9] -->
         <div class="rcol">
+
+            <!-- show coordinates of points that were clicked on -->
+            <div>
+                <p>Last point clicked:</p>
+                <div id="coord-list">
+                </div>
+            </div>
+
+            <!-- a dropdown list to select x-coordinate [1,9] -->
+            <label for="x-coords">Select the x coordinate for the point you want to add.</label>
+            <select name="x-coords" id="x-coords">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+            </select>
+            <p></p>
+
+            <!-- a dropdown list to select y-coordinate [1,9] -->
+            <label for="y-coords">Select the y coordinate for the point you want to add.</label>
+            <select name="y-coords" id="y-coords">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+            </select>
+            <p></p>
+            <button type="button" id="subButton">Add point</button>
+
         </div>
     </div>
 
@@ -42,3 +82,4 @@
 </body>
 
 </html>
+
