@@ -48,11 +48,11 @@ body {
 
 
 /* tag styling the points of the graph */
-circle {
+.point {
 	fill: blue;
 }
 
-circle:hover {
+.point:hover {
 	fill: red;
 }
 
