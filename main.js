@@ -63,6 +63,7 @@ d3.csv("data/scatter-data.csv").then((data) => {
 
 });
 
+// frame for the bar plot
 const FRAME2 = d3.select("#barplot") 
                   .append("svg") 
                     .attr("height", FRAME_HEIGHT)   
@@ -70,9 +71,9 @@ const FRAME2 = d3.select("#barplot")
                     .attr("class", "frame"); 
 
 
-
 // open file for bar chart
 d3.csv("data/bar-data.csv").then((data) => { 
+
 	let xlab = ["A", "B", "C", "D", "E", "F", "G"]
 
 	const MAX_Y = d3.max(data, (d) => { return parseInt(d.amount); });
@@ -83,11 +84,6 @@ d3.csv("data/bar-data.csv").then((data) => {
 	const Y_SCALE_REV = d3.scaleLinear() 
 	                   .domain([0, (MAX_Y)])  
 	                   .range([VIS_HEIGHT, 0]);
-
-
-	// const X_SCALE = d3.scaleBand() 
-	//                    .domain(xlab)  
-	//                    .range([0, VIS_WIDTH]); 
 
 	 const X_SCALE = d3.scalePoint() 
 	                   .domain(xlab)  
@@ -104,7 +100,6 @@ d3.csv("data/bar-data.csv").then((data) => {
 	 const BAR_WIDTH = 30
 	 const GAP = BAR_WIDTH / 4
 
-
 	// add the bars (rectangles) with styling
 	FRAME2.selectAll("bars")
 		.data(data)
@@ -117,7 +112,7 @@ d3.csv("data/bar-data.csv").then((data) => {
 			.attr("class", "bar");
 
     // x axis for the bar plot
-	FRAME1.append("g") 
+	FRAME2.append("g") 
         .attr("transform", "translate(" + MARGINS.left + 
               "," + (VIS_HEIGHT+ MARGINS.bottom) + ")") 
         .call(d3.axisBottom(X_SCALE).ticks(7)) 
@@ -126,26 +121,20 @@ d3.csv("data/bar-data.csv").then((data) => {
           .attr("transform", "translate(-10,0) rotate(-45)"); 
 
      // Y axis for the bar plot
-	FRAME1.append("g") 
+	FRAME2.append("g") 
         .attr("transform", "translate(" + MARGINS.left + 
               "," + MARGINS.top + ")") 
         .call(d3.axisLeft(Y_SCALE_REV).ticks(4)) 
           .attr("font-size", '20px'); 
-});
 
-<<<<<<< HEAD
-	// axis for the bar plot
-	FRAME2.append("xy")
+	// x axis for the bar plot
+    FRAME2.append("xy")
 			.attr("transform", "translate(" + MARGINS.left + 
 				"," + (VIS_HEIGHT + MARGINS.top) + ")")
 			.call(d3.axisBottom(X_SCALE2).ticks(4))
 			.attr("font-size", "20px")
+});
 
-})
-
-=======
-
->>>>>>> fbfc0bf8db480c5da24cfade411eaedda4bf9dc0
 // function to add and remove border on click of a point
 function borderClick(ptID) {
 
@@ -196,7 +185,3 @@ function pointClick() {
 }
 
 document.getElementById("subButton").addEventListener("click", pointClick);
-<<<<<<< HEAD
-
-=======
->>>>>>> fbfc0bf8db480c5da24cfade411eaedda4bf9dc0
