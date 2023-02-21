@@ -42,6 +42,7 @@ d3.csv("data/scatter-data.csv").then((data) => {
       .data(data) // passed from .then  
       .enter()       
       .append("circle")
+        .on("click", (d) => { borderClick("(" + d.x + ", " + d.y + ")"); })
       	.attr("cx", (d) => { return (X_SCALE(d.x) + MARGINS.left); }) 
         .attr("cy", (d) => { return (Y_SCALE(d.y) + MARGINS.top); }) 
         .attr("r", 10)
@@ -177,15 +178,15 @@ function pointClick() {
 
 	let newptID = "(" + xcoord + ", " + ycoord + ")"
 
-	let container = document.getElementById("cont");
+	let container = d3.select("#scatterplot").select("svg");
 	
 	// create the point and set attributes
 	let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 	circle.setAttribute("class", "point");
 	circle.setAttribute("id", newptID);
-	circle.setAttribute("cx", xcoord * 20);
-	circle.setAttribute("cy", ycoord * -20 + 200);
-	circle.setAttribute("r", 5);
+	circle.setAttribute("cx", X_SCALE(xcoord) + MARGINS.left);
+  circle.setAttribute("cy", Y_SCALE(ycoord) + MARGINS.top);
+  circle.setAttribute("r", 10);
 	circle.setAttribute("onclick", "borderClick('" + newptID + "')");
 	
 	container.appendChild(circle);
