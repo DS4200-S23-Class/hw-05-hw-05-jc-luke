@@ -117,7 +117,7 @@ d3.csv("data/bar-data.csv").then((data) => {
 			.attr("class", "bar");
 
     // x axis for the bar plot
-	FRAME1.append("g") 
+	FRAME2.append("g") 
         .attr("transform", "translate(" + MARGINS.left + 
               "," + (VIS_HEIGHT+ MARGINS.bottom) + ")") 
         .call(d3.axisBottom(X_SCALE).ticks(7)) 
@@ -126,26 +126,22 @@ d3.csv("data/bar-data.csv").then((data) => {
           .attr("transform", "translate(-10,0) rotate(-45)"); 
 
      // Y axis for the bar plot
-	FRAME1.append("g") 
+	FRAME2.append("g") 
         .attr("transform", "translate(" + MARGINS.left + 
               "," + MARGINS.top + ")") 
         .call(d3.axisLeft(Y_SCALE_REV).ticks(4)) 
           .attr("font-size", '20px'); 
 });
 
-<<<<<<< HEAD
 	// axis for the bar plot
-	FRAME2.append("xy")
-			.attr("transform", "translate(" + MARGINS.left + 
-				"," + (VIS_HEIGHT + MARGINS.top) + ")")
-			.call(d3.axisBottom(X_SCALE2).ticks(4))
-			.attr("font-size", "20px")
+	//FRAME2.append("xy")
+	//		.attr("transform", "translate(" + MARGINS.left + 
+	//			"," + (VIS_HEIGHT + MARGINS.top) + ")")
+	//		.call(d3.axisBottom(X_SCALE2).ticks(4))
+	//		.attr("font-size", "20px")
 
-})
+//})
 
-=======
-
->>>>>>> fbfc0bf8db480c5da24cfade411eaedda4bf9dc0
 // function to add and remove border on click of a point
 function borderClick(ptID) {
 
@@ -196,7 +192,4 @@ function pointClick() {
 }
 
 document.getElementById("subButton").addEventListener("click", pointClick);
-<<<<<<< HEAD
 
-=======
->>>>>>> fbfc0bf8db480c5da24cfade411eaedda4bf9dc0
