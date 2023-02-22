@@ -42,7 +42,8 @@ d3.csv("data/scatter-data.csv").then((data) => {
       .data(data) // passed from .then  
       .enter()       
       .append("circle")
-        .on("click", (d) => { borderClick("(" + d.x + ", " + d.y + ")"); })
+      	.attr("id", (d) => { return ("(" + d.x + ", " + d.y + ")"); })
+        .on("click", borderClick)
       	.attr("cx", (d) => { return (X_SCALE(d.x) + MARGINS.left); }) 
         .attr("cy", (d) => { return (Y_SCALE(d.y) + MARGINS.top); }) 
         .attr("r", 10)
@@ -121,9 +122,15 @@ d3.csv("data/bar-data.csv").then((data) => {
 });
 
 // function to add and remove border on click of a point
-function borderClick(ptID) {
+function borderClick(event, d) {
 
-	console.log("clicked" + ptID);
+	// Steps: select all points
+	// use console log to see the data structure
+	// use for loop to iterate through circles
+	// apply bordering to each circle
+
+
+	console.log(this);
 
 	let element = document.getElementById(ptID);
 
@@ -155,6 +162,7 @@ function pointClick() {
 
 	let newptID = "(" + xcoord + ", " + ycoord + ")"
 
+	// check for error with this line
 	let container = d3.select("#scatterplot").select("svg");
 	
 	// create the point and set attributes
