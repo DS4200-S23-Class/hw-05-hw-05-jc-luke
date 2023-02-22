@@ -1,6 +1,6 @@
 // JS File for Homework 5: Interactive Graph with D3
 // Luke Abbatessa and Jocelyn Ju
-// Last Modified: 02.19.2023
+// Last Modified: 02.22.2023
 
 // Instantiate visualization dimensions/limitations
 const FRAME_HEIGHT = 500;
@@ -37,6 +37,7 @@ d3.csv("data/scatter-data.csv").then((data) => {
   const Y_SCALE = d3.scaleLinear() 
                    .domain([0, (MAX_Y + 1)]) // Add some padding  
                    .range([VIS_HEIGHT, 0]); 
+<<<<<<< HEAD
 
   // Use X_SCALE and Y_SCALE to plot our points
   FRAME1.selectAll("points")  
@@ -49,6 +50,8 @@ d3.csv("data/scatter-data.csv").then((data) => {
         .attr("r", 10)
         .attr("class", "point")
         .on("click", borderClick);
+=======
+>>>>>>> 01a09ff7e5c17085cf8369b97081b49cd2ce6831
   
   // Add an x axis to the vis  
   FRAME1.append("g") 
@@ -64,7 +67,73 @@ d3.csv("data/scatter-data.csv").then((data) => {
         .call(d3.axisLeft(Y_SCALE).ticks(10)) 
           .attr("font-size", '10px');
 
+
+   // Define event handler functions for point modifications
+   function handleMouseover(event, d) {
+      // on mouseover, highlight the point 
+      d3.select(this).style("fill", "lightcoral");
+    }
+
+   function handleMouseclick(event, d) {
+    // add a border to the point on click 
+   	// or remove it if the point already has a border
+
+   	let selection = d3.select(this)
+   	selection.classed("stroke", !selection.classed("stroke"))
+
+
+   	// display the coordinates of the point last clicked
+
+		let newText = d3.select(this).attr("id")
+		d3.select("#coord-list").html(newText)
+		console.log(newText)
+
+    }
+
+    function handlePointadd(event, d) {
+    // add a point on click of subbutton
+
+   		let xcoord = d3.select('#x-coords').property("value");
+			let ycoord = d3.select('#y-coords').property("value");
+
+			let newptID = "(" + xcoord + ", " + ycoord + ")";
+	
+			// Create the point and set attributes
+			FRAME1.append('circle')
+						.attr("id", newptID)
+						.attr("cx", X_SCALE(xcoord) + MARGINS.left)
+						.attr("cy", Y_SCALE(ycoord) + MARGINS.top)
+						.attr("class", "point")
+						.attr("r", 10)
+						.on("mouseover", handleMouseover) //add event listeners
+						.on("click", handleMouseclick)
+						.on("mouseleave", handleMouseleave);
+   }
+
+   function handleMouseleave(event, d) {
+      // on mouseleave, return column fill to original
+      d3.select(this).style("fill", "lightblue"); 
+    } 
+
+  // Use X_SCALE and Y_SCALE to plot our points
+  FRAME1.selectAll("points")  
+      .data(data) // Passed from .then  
+      .enter()       
+      .append("circle")
+      	.attr("id", (d) => { return ("(" + d.x + ", " + d.y + ")"); })
+      	.attr("cx", (d) => { return (X_SCALE(d.x) + MARGINS.left); }) 
+        .attr("cy", (d) => { return (Y_SCALE(d.y) + MARGINS.top); }) 
+        .attr("r", 10)
+        .attr("class", "point")
+	      .on("mouseover", handleMouseover) //add event listeners
+				.on("click", handleMouseclick)
+				.on("mouseleave", handleMouseleave); 
+
+	d3.select("#subButton")
+			.on("click", handlePointadd);
+
 });
+
 
 // Create a frame for the bar plot
 const FRAME2 = d3.select("#barplot") 
@@ -87,11 +156,10 @@ d3.csv("data/bar-data.csv").then((data) => {
 	const xSCALE = d3.scaleBand()
 										  .range([ 0, VIS_WIDTH ])
 										  .domain(data.map(function(d) { return d.category; }))
-										  .padding(0.2);
+										  .padding(0.3);
 
+	 const BAR_WIDTH = 40
 
-	 const BAR_WIDTH = 30;
-	 const GAP = BAR_WIDTH / 4;
 
 	 // Create the x-axis
 	 FRAME2.append("g")
@@ -99,16 +167,56 @@ d3.csv("data/bar-data.csv").then((data) => {
 		  	"," + (VIS_HEIGHT+ MARGINS.bottom) + ")")
 		  .call(d3.axisBottom(xSCALE))
 		  .selectAll("text")
-		    .attr("font-size", '20px');
+		    .attr("font-size", '10px');
 
 	// Create the y-axis
 	FRAME2.append("g")
 	    .attr("transform", "translate(" + MARGINS.left + "," + MARGINS.top + ")") 
 		  .call(d3.axisLeft(ySCALE_REV))
 		  .selectAll("text")
-		    .attr("font-size", '20px');
+		    .attr("font-size", '10px');
 
-	// Create the bars
+
+    // create a tooltip for the bar plot
+   const TOOLTIP = d3.select("#barplot")
+                      .append("div")
+									    .attr("class", "tooltip")
+									    .style("opacity", 0)
+									    .style("background-color", "lightgrey")
+									    .style("border", "solid")
+									    .style("border-width", "2px")
+									    .style("border-radius", "7px")
+									    .style("padding", "3px")
+									    .style("position", "absolute");
+
+   // Define event handler functions for tooltips
+   function handleMouseover(event, d) {
+      // on mouseover, make opaque 
+      TOOLTIP.style("opacity", 1)
+
+      // on mouseover, highlight the bar (and outline for accessibility)
+      d3.select(this).style("fill", "lightseagreen")
+      							 .style("stroke", "black")
+      							 .style("stroke-width", "3px")
+    }
+
+   function handleMousemove(event, d) {
+      // position the tooltip and fill in information 
+      TOOLTIP.html("Category: " + d.category + "<br>Value: " + d.amount)
+              .style("left", event.x + "px")
+              .style("top", event.y + "px"); // place the tooltip
+    }
+
+   function handleMouseleave(event, d) {
+      // on mouseleave, make transparent 
+   		// return column fill and stroke to original
+      TOOLTIP.style("opacity", 0)
+      d3.select(this).style("fill", "mediumpurple")
+      							 .style("stroke", "none"); 
+    } 
+
+
+	// Create the bars and add event listeners
 	FRAME2.selectAll("bar")
   .data(data)
   .enter()
@@ -116,14 +224,17 @@ d3.csv("data/bar-data.csv").then((data) => {
     .attr("x", function(d) { return xSCALE(d.category) + MARGINS.left; })
     .attr("y", function(d) { return ySCALE_REV(d.amount) + MARGINS.top; })
     .attr("width", BAR_WIDTH)
+    .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(d.amount); })
     .attr("class", "bar")
-    .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(d.amount); });
-
+   .on("mouseover", handleMouseover) //add event listeners
+   .on("mousemove", handleMousemove)
+   .on("mouseleave", handleMouseleave);    
 });
 
-// Implement function to add and remove border on click of a point
-function borderClick(event, d) {
+// // Implement function to add and remove border on click of a point
+// function borderClick(event, d) {
 
+<<<<<<< HEAD
 	// Upon clicking a point, it will get a border
 			// coordinates should show in right column
 			// if it already has a border, disappear and remove coordinates
@@ -166,18 +277,71 @@ function pointClick() {
 	let newptID = "(" + xcoord + ", " + ycoord + ")";
 
 	let container = d3.select("#scatterplot").select("svg");
-	
-	// Create the point and set attributes
-	let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-	circle.setAttribute("class", "point");
-	circle.setAttribute("id", newptID);
-	circle.setAttribute("cx", X_SCALE(xcoord) + MARGINS.left);
-  circle.setAttribute("cy", Y_SCALE(ycoord) + MARGINS.top);
-  circle.setAttribute("r", 10);
-	circle.setAttribute("onclick", "borderClick('" + newptID + "')");
-	
-	container.appendChild(circle);
-}
+=======
+// 	// Select all points
+// 	let points = d3.selectAll(".point");
 
-document.getElementById("subButton").addEventListener("click", pointClick);
+// 	// Iterate through points
+// 	for (let i = 0; i < points.length; i++) {
+// 		if(points[i].checked) {
+			
+// 			let element = points[i].value;
+		
+// 			// Display the latest selected point in the right hand column
+// 			let newText = d3.select(element).attr("id");
+// 			let coords = document.getElementById("coord-list");
 
+// 			coords.innerHTML = newText;
+
+// 			// Upon clicking a point, it will get a border
+// 			// coordinates should show in right column
+// 			// if it already has a border, disappear and remove coordinates
+// 			if (element.classList.contains("stroke")) {
+// 				element.classList.remove("stroke");
+// 			}
+// 			else {
+// 				element.classList.add("stroke");
+// 			}
+// 		}
+// 	}
+// }
+
+// // Implement function to add new points and set their ids
+// function pointClick() {
+
+// 	// Define scale functions that maps our data values 
+//   // (domain) to pixel values (range)
+//   const X_SCALE = d3.scaleLinear() 
+//                    .domain([0, (9 + 1)]) // add some padding  
+//                    .range([0, VIS_WIDTH]);
+
+//   // Define scale functions that maps our data values 
+//   // (domain) to pixel values (range)
+//   const Y_SCALE = d3.scaleLinear() 
+//                    .domain([0, (9 + 1)]) // add some padding  
+//                    .range([VIS_HEIGHT, 0]);
+
+// 	// Get the coordinates of the new point from the user's selection
+// 	let xcoords = document.getElementById("x-coords");
+// 	let xcoord = Number(xcoords.options[xcoords.selectedIndex].text);
+// 	let ycoords = document.getElementById("y-coords");
+// 	let ycoord = Number(ycoords.options[ycoords.selectedIndex].text);
+
+// 	let newptID = "(" + xcoord + ", " + ycoord + ")";
+
+// 	let container = d3.select("#scatterplot").select("svg");
+>>>>>>> 01a09ff7e5c17085cf8369b97081b49cd2ce6831
+	
+// 	// Create the point and set attributes
+// 	let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+// 	circle.setAttribute("class", "point");
+// 	circle.setAttribute("id", newptID);
+// 	circle.setAttribute("cx", X_SCALE(xcoord) + MARGINS.left);
+//   circle.setAttribute("cy", Y_SCALE(ycoord) + MARGINS.top);
+//   circle.setAttribute("r", 10);
+// 	circle.setAttribute("onclick", "borderClick('" + newptID + "')");
+	
+// 	container.appendChild(circle);
+// }
+
+// document.getElementById("subButton").addEventListener("click", pointClick);

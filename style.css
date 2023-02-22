@@ -49,11 +49,7 @@ body {
 
 /* Add tag styling the points of the graph */
 .point {
-	fill: blue;
-}
-
-.point:hover {
-	fill: red;
+	fill: lightblue;
 }
 
 .stroke {
@@ -66,7 +62,7 @@ button {
 	margin: 10px;
 }
 
-/* Add styling to the bars */
-#bar {
-	fill: blueviolet;
-}
+/* add styling to the bars */
+.bar {
+	fill: mediumpurple;
+
