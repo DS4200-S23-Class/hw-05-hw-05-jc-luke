@@ -2,7 +2,7 @@
 // Luke Abbatessa and Jocelyn Ju
 // Last Modified: 02.19.2023
 
-// create a frame
+// create a frame for the scatter plot
 const FRAME_HEIGHT = 500;
 const FRAME_WIDTH = 500; 
 const MARGINS = {left: 50, right: 50, top: 50, bottom: 50};
@@ -65,6 +65,7 @@ d3.csv("data/scatter-data.csv").then((data) => {
 
 });
 
+
 // frame for the bar plot
 const FRAME2 = d3.select("#barplot") 
                   .append("svg") 
@@ -86,11 +87,10 @@ d3.csv("data/bar-data.csv").then((data) => {
 	const xSCALE = d3.scaleBand()
 										  .range([ 0, VIS_WIDTH ])
 										  .domain(data.map(function(d) { return d.category; }))
-										  .padding(0.2);
+										  .padding(0.3);
 
 
-	 const BAR_WIDTH = 30
-	 const GAP = BAR_WIDTH / 4
+	 const BAR_WIDTH = 40
 
 	 // create the x-axis
 	 FRAME2.append("g")
@@ -98,16 +98,55 @@ d3.csv("data/bar-data.csv").then((data) => {
 		  	"," + (VIS_HEIGHT+ MARGINS.bottom) + ")")
 		  .call(d3.axisBottom(xSCALE))
 		  .selectAll("text")
-		    .attr("font-size", '20px');
+		    .attr("font-size", '10px');
 
 	// create the y-axis
 	FRAME2.append("g")
 	    .attr("transform", "translate(" + MARGINS.left + "," + MARGINS.top + ")") 
 		  .call(d3.axisLeft(ySCALE_REV))
 		  .selectAll("text")
-		    .attr("font-size", '20px');
+		    .attr("font-size", '10px');
 
-	// create the bars
+
+    // create a tooltip for the bar plot
+   const TOOLTIP = d3.select("#barplot")
+                      .append("div")
+									    .attr("class", "tooltip")
+									    .style("opacity", 0)
+									    .style("background-color", "lightgrey")
+									    .style("border", "solid")
+									    .style("border-width", "2px")
+									    .style("border-radius", "7px")
+									    .style("padding", "3px")
+									    .style("position", "absolute");
+
+   // Define event handler functions for tooltips
+   function handleMouseover(event, d) {
+      // on mouseover, make opaque 
+      TOOLTIP.style("opacity", 1)
+
+      // on mouseover, highlight the bar (and outline for accessibility)
+      d3.select(this).style("fill", "lightseagreen")
+      							 .style("stroke", "black")
+      							 .style("stroke-width", "3px")
+    }
+
+   function handleMousemove(event, d) {
+      // position the tooltip and fill in information 
+      TOOLTIP.html("Category: " + d.category + "<br>Value: " + d.amount)
+              .style("left", event.x + "px")
+              .style("top", event.y + "px"); // place the tooltip
+    }
+
+   function handleMouseleave(event, d) {
+      // on mouseleave, make transparent 
+   		// return column fill and stroke to original
+      TOOLTIP.style("opacity", 0)
+      d3.select(this).style("fill", "mediumpurple")
+      							 .style("stroke", "none"); 
+    } 
+
+  // create the bars and add event listeners
 	FRAME2.selectAll("bar")
   .data(data)
   .enter()
@@ -115,9 +154,11 @@ d3.csv("data/bar-data.csv").then((data) => {
     .attr("x", function(d) { return xSCALE(d.category) + MARGINS.left; })
     .attr("y", function(d) { return ySCALE_REV(d.amount) + MARGINS.top; })
     .attr("width", BAR_WIDTH)
-    .attr("class", "bar")
-
     .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(d.amount); })
+    .attr("class", "bar")
+   .on("mouseover", handleMouseover) //add event listeners
+   .on("mousemove", handleMousemove)
+   .on("mouseleave", handleMouseleave);    
 
 });
 

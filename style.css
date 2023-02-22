@@ -67,6 +67,7 @@ button {
 }
 
 /* add styling to the bars */
-#bar {
-	fill: blueviolet;
+.bar {
+	fill: mediumpurple;
+
 }
