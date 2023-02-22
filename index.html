@@ -3,39 +3,44 @@
 
 <head>
     <meta charset=utf-8/>
+
+    <!-- Link stylesheet -->
     <link rel="stylesheet" href="style.css">
 
+    <!-- Include D3 library in head -->
     <script src="js/d3.v6.1.1/d3.min.js"></script>
 
+    <!-- Add a title -->
     <title>hw-05</title>
 </head>
 
 
 <body>
+    <!-- Add a centered header -->
     <h1 class="centered">hw-05: Interactive Graph with D3</h1>
 
     <div class="row">
 
     <div class="maincont">
 
-        <!-- create the left hand column -->
+        <!-- Create the left hand column -->
         <div class="lcol">
             <div id="scatterplot"></div>
             <div id="barplot"></div>
         </div>
     </div>
 
-        <!-- create the right hand column and add the dropdowns [1,9] -->
+        <!-- Create the right hand column and add the dropdowns [1,9] -->
         <div class="rcol">
 
-            <!-- show coordinates of points that were clicked on -->
+            <!-- Show coordinates of points that were clicked on -->
             <div>
                 <p>Last point clicked:</p>
                 <div id="coord-list">
                 </div>
             </div>
 
-            <!-- a dropdown list to select x-coordinate [1,9] -->
+            <!-- Add a dropdown list to select x-coordinate [1,9] -->
             <label for="x-coords">Select the x coordinate for the point you want to add.</label>
             <select name="x-coords" id="x-coords">
                 <option value="1">1</option>
@@ -50,7 +55,7 @@
             </select>
             <p></p>
 
-            <!-- a dropdown list to select y-coordinate [1,9] -->
+            <!-- Add a dropdown list to select y-coordinate [1,9] -->
             <label for="y-coords">Select the y coordinate for the point you want to add.</label>
             <select name="y-coords" id="y-coords">
                 <option value="1">1</option>
@@ -69,20 +74,23 @@
         </div>
     </div>
 
-    <!-- add acknowledgements section for resources uded -->
+    <!-- Add acknowledgements section for resources used -->
     <h4 class="centered">Acknowledgements</h4>
     <div>
         <ul>
-            <!-- https://www.geeksforgeeks.org/d3-js-axisbottom-function/ - axis bottom
-            https://stackoverflow.com/questions/31189289/how-to-flip-the-y-axis-on-my-d3-graph for flipping y axis
-            https://d3-graph-gallery.com/graph/custom_axis.html x-axis labels
-            https://d3-graph-gallery.com/graph/barplot_basic.html help with categorical X 
-            https://d3-graph-gallery.com/graph/barplot_basic.html for bar plot-->
-            <!-- https://www.geeksforgeeks.org/d3-js-axisbottom-function/ - axis bottom -->
-            <!-- https://stackoverflow.com/questions/18342416/d3-js-click-event-in-a-bubble-scatter-chart - scatter chart click event -->
+            <li><a href="https://www.geeksforgeeks.org/d3-js-axisbottom-function/">D3.js axisBottom() Function</a></li>
+            <li><a href="https://stackoverflow.com/questions/31189289/how-to-flip-the-y-axis-on-my-d3-graph">How to flip the Y axis on my D3 graph?</a></li>
+            <li><a href="https://d3-graph-gallery.com/graph/custom_axis.html">Drawing axis in d3.js</a></li>
+            <li><a href="https://d3-graph-gallery.com/graph/barplot_basic.html">Most basic barplot in d3.js</a></li> 
+            <li><a href="https://stackoverflow.com/questions/18342416/d3-js-click-event-in-a-bubble-scatter-chart">d3.js: click event in a bubble/scatter chart</a></li>
+            <li><a href="https://www.tutorialsteacher.com/d3js/select-dom-element-using-d3js#d3.selectall">Select DOM Elements using D3</a></li>
+            <li><a href="https://stackoverflow.com/questions/56990500/javascript-iterate-through-nodelist">JavaScript iterate through NodeList [duplicate]</a></li>
+            <li><a href="https://stackoverflow.com/questions/20414980/d3-select-by-attribute-value">d3.select by attribute value</a></li>
+            <li><a href="https://stackoverflow.com/questions/52219713/d3-get-element-attribute-inside-selectall">D3: get element attribute inside selectAll</a></li>
         </ul>
     </div>
 
+    <!-- Include js at end of body -->
     <script src="main.js"></script>
 </body>
 

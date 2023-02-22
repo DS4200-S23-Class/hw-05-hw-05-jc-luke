@@ -2,7 +2,7 @@
 // Luke Abbatessa and Jocelyn Ju
 // Last Modified: 02.19.2023
 
-// create a frame
+// Instantiate visualization dimensions/limitations
 const FRAME_HEIGHT = 500;
 const FRAME_WIDTH = 500; 
 const MARGINS = {left: 50, right: 50, top: 50, bottom: 50};
@@ -10,36 +10,37 @@ const MARGINS = {left: 50, right: 50, top: 50, bottom: 50};
 const VIS_HEIGHT = FRAME_HEIGHT - MARGINS.top - MARGINS.bottom;
 const VIS_WIDTH = FRAME_WIDTH - MARGINS.left - MARGINS.right; 
 
+// Create a frame for the scatter plot
 const FRAME1 = d3.select("#scatterplot")
                   .append("svg")
                     .attr("height", FRAME_HEIGHT)
                     .attr("width", FRAME_WIDTH)
                     .attr("class", "frame"); 
 
-// read data and create plot
+// Read data and create a scatter plot
 d3.csv("data/scatter-data.csv").then((data) => {
 
-  // find max X
+  // Find max X
   const MAX_X = d3.max(data, (d) => { return parseInt(d.x); });
   
   // Define scale functions that maps our data values 
   // (domain) to pixel values (range)
   const X_SCALE = d3.scaleLinear() 
-                   .domain([0, (MAX_X + 1)]) // add some padding  
+                   .domain([0, (MAX_X + 1)]) // Add some padding  
                    .range([0, VIS_WIDTH]);
 
-  // find max Y
+  // Find max Y
   const MAX_Y = d3.max(data, (d) => { return parseInt(d.y); });
   
   // Define scale functions that maps our data values 
   // (domain) to pixel values (range)
   const Y_SCALE = d3.scaleLinear() 
-                   .domain([0, (MAX_Y + 1)]) // add some padding  
+                   .domain([0, (MAX_Y + 1)]) // Add some padding  
                    .range([VIS_HEIGHT, 0]); 
 
   // Use X_SCALE and Y_SCALE to plot our points
   FRAME1.selectAll("points")  
-      .data(data) // passed from .then  
+      .data(data) // Passed from .then  
       .enter()       
       .append("circle")
       	.attr("id", (d) => { return ("(" + d.x + ", " + d.y + ")"); })
@@ -65,7 +66,7 @@ d3.csv("data/scatter-data.csv").then((data) => {
 
 });
 
-// frame for the bar plot
+// Create a frame for the bar plot
 const FRAME2 = d3.select("#barplot") 
                   .append("svg") 
                     .attr("height", FRAME_HEIGHT)   
@@ -73,7 +74,7 @@ const FRAME2 = d3.select("#barplot")
                     .attr("class", "frame");
 
 
-// open file for bar chart
+// Open file for bar chart
 d3.csv("data/bar-data.csv").then((data) => { 
 
 	const MAXy = d3.max(data, (d) => { return parseInt(d.amount); });
@@ -89,10 +90,10 @@ d3.csv("data/bar-data.csv").then((data) => {
 										  .padding(0.2);
 
 
-	 const BAR_WIDTH = 30
-	 const GAP = BAR_WIDTH / 4
+	 const BAR_WIDTH = 30;
+	 const GAP = BAR_WIDTH / 4;
 
-	 // create the x-axis
+	 // Create the x-axis
 	 FRAME2.append("g")
 		  .attr("transform", "translate(" + MARGINS.left + 
 		  	"," + (VIS_HEIGHT+ MARGINS.bottom) + ")")
@@ -100,14 +101,14 @@ d3.csv("data/bar-data.csv").then((data) => {
 		  .selectAll("text")
 		    .attr("font-size", '20px');
 
-	// create the y-axis
+	// Create the y-axis
 	FRAME2.append("g")
 	    .attr("transform", "translate(" + MARGINS.left + "," + MARGINS.top + ")") 
 		  .call(d3.axisLeft(ySCALE_REV))
 		  .selectAll("text")
 		    .attr("font-size", '20px');
 
-	// create the bars
+	// Create the bars
 	FRAME2.selectAll("bar")
   .data(data)
   .enter()
@@ -116,56 +117,67 @@ d3.csv("data/bar-data.csv").then((data) => {
     .attr("y", function(d) { return ySCALE_REV(d.amount) + MARGINS.top; })
     .attr("width", BAR_WIDTH)
     .attr("class", "bar")
-
-    .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(d.amount); })
+    .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(d.amount); });
 
 });
 
-// function to add and remove border on click of a point
+// Implement function to add and remove border on click of a point
 function borderClick(event, d) {
 
-	// Steps: select all points
-	// use console log to see the data structure
-	// use for loop to iterate through circles
-	// apply bordering to each circle
+	// Select all points
+	let points = d3.selectAll(".point");
 
+	// Iterate through points
+	for (let i = 0; i < points.length; i++) {
+		if(points[i].checked) {
+			
+			let element = points[i].value;
+		
+			// Display the latest selected point in the right hand column
+			let newText = d3.select(element).attr("id");
+			let coords = document.getElementById("coord-list");
 
-	console.log(this);
+			coords.innerHTML = newText;
 
-	let element = document.getElementById(ptID);
-
-	// display the latest selected point in the right hand column
-	let newText = ptID
-	let coords = document.getElementById("coord-list");
-
-	coords.innerHTML = newText;
-
-	// upon clicking a point, it will get a border
-	// coordinates should show in right column
-	// if it already has a border, disappear and remove coordinates
-	if (element.classList.contains("stroke")) {
-		element.classList.remove("stroke")
-	}
-	else {
-		element.classList.add("stroke")
+			// Upon clicking a point, it will get a border
+			// coordinates should show in right column
+			// if it already has a border, disappear and remove coordinates
+			if (element.classList.contains("stroke")) {
+				element.classList.remove("stroke");
+			}
+			else {
+				element.classList.add("stroke");
+			}
+		}
 	}
 }
 
-// function to add new points and set their ids
+// Implement function to add new points and set their ids
 function pointClick() {
 
-	// get the coordinates of the new point from the user's selection
+	// Define scale functions that maps our data values 
+  // (domain) to pixel values (range)
+  const X_SCALE = d3.scaleLinear() 
+                   .domain([0, (9 + 1)]) // add some padding  
+                   .range([0, VIS_WIDTH]);
+
+  // Define scale functions that maps our data values 
+  // (domain) to pixel values (range)
+  const Y_SCALE = d3.scaleLinear() 
+                   .domain([0, (9 + 1)]) // add some padding  
+                   .range([VIS_HEIGHT, 0]);
+
+	// Get the coordinates of the new point from the user's selection
 	let xcoords = document.getElementById("x-coords");
 	let xcoord = Number(xcoords.options[xcoords.selectedIndex].text);
 	let ycoords = document.getElementById("y-coords");
 	let ycoord = Number(ycoords.options[ycoords.selectedIndex].text);
 
-	let newptID = "(" + xcoord + ", " + ycoord + ")"
+	let newptID = "(" + xcoord + ", " + ycoord + ")";
 
-	// check for error with this line
 	let container = d3.select("#scatterplot").select("svg");
 	
-	// create the point and set attributes
+	// Create the point and set attributes
 	let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 	circle.setAttribute("class", "point");
 	circle.setAttribute("id", newptID);
