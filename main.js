@@ -76,17 +76,11 @@ const FRAME2 = d3.select("#barplot")
 d3.csv("data/bar-data.csv").then((data) => { 
 
 	const MAXy = d3.max(data, (d) => { return parseInt(d.amount); });
-	const ySCALE = d3.scaleLinear() 
-	                   .domain([0, (MAXy)])  
-	                   .range([0, VIS_HEIGHT]); 
 
 	const ySCALE_REV = d3.scaleLinear() 
 	                   .domain([0, MAXy])  
 	                   .range([VIS_HEIGHT, 0]);
 
-	 // const X_SCALE = d3.scalePoint() 
-	 //                   .domain(xlab)  
-	 //                   .range([0, VIS_WIDTH]); 
 
 	const xSCALE = d3.scaleBand()
 										  .range([ 0, VIS_WIDTH ])
@@ -98,7 +92,7 @@ d3.csv("data/bar-data.csv").then((data) => {
 	 const GAP = BAR_WIDTH / 4
 
 	 // create the x-axis
-	  FRAME2.append("g")
+	 FRAME2.append("g")
 		  .attr("transform", "translate(" + MARGINS.left + 
 		  	"," + (VIS_HEIGHT+ MARGINS.bottom) + ")")
 		  .call(d3.axisBottom(xSCALE))
@@ -120,8 +114,9 @@ d3.csv("data/bar-data.csv").then((data) => {
     .attr("x", function(d) { return xSCALE(d.category) + MARGINS.left; })
     .attr("y", function(d) { return ySCALE_REV(d.amount) + MARGINS.top; })
     .attr("width", BAR_WIDTH)
+    .attr("class", "bar")
+
     .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(d.amount); })
-    .attr("fill", "#69b3a2")
 
 });
 

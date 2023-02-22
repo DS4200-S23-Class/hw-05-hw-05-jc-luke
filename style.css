@@ -65,3 +65,8 @@ body {
 button {
 	margin: 10px;
 }
+
+/* add styling to the bars */
+#bar {
+	fill: blueviolet;
+}
