@@ -6,7 +6,7 @@
 	box-sizing: border-box;
 }
 
-/* Set font of page to arial */
+/* Set font of page to Arial */
 body {
 	font-family: Arial;
 }
@@ -47,7 +47,7 @@ body {
 }
 
 
-/* Add tag styling the points of the graph */
+/* Add classes styling the points of the graph */
 .point {
 	fill: lightblue;
 }
@@ -62,7 +62,7 @@ button {
 	margin: 10px;
 }
 
-/* add styling to the bars */
+/* Add class styling the bars of the barplot */
 .bar {
 	fill: mediumpurple;
 
