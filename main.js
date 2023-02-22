@@ -44,11 +44,11 @@ d3.csv("data/scatter-data.csv").then((data) => {
       .enter()       
       .append("circle")
       	.attr("id", (d) => { return ("(" + d.x + ", " + d.y + ")"); })
-        .on("click", borderClick)
       	.attr("cx", (d) => { return (X_SCALE(d.x) + MARGINS.left); }) 
         .attr("cy", (d) => { return (Y_SCALE(d.y) + MARGINS.top); }) 
         .attr("r", 10)
-        .attr("class", "point");
+        .attr("class", "point")
+        .on("click", borderClick);
   
   // Add an x axis to the vis  
   FRAME1.append("g") 
@@ -124,33 +124,23 @@ d3.csv("data/bar-data.csv").then((data) => {
 // Implement function to add and remove border on click of a point
 function borderClick(event, d) {
 
-	// Select all points
-	let points = d3.selectAll(".point");
-
-	// Iterate through points
-	for (let i = 0; i < points.length; i++) {
-		if(points[i].checked) {
-			
-			let element = points[i].value;
-		
-			// Display the latest selected point in the right hand column
-			let newText = d3.select(element).attr("id");
-			let coords = document.getElementById("coord-list");
-
-			coords.innerHTML = newText;
-
-			// Upon clicking a point, it will get a border
+	// Upon clicking a point, it will get a border
 			// coordinates should show in right column
 			// if it already has a border, disappear and remove coordinates
-			if (element.classList.contains("stroke")) {
-				element.classList.remove("stroke");
+			if (Object.values(this.classList).includes("stroke")) {
+				this.classList.remove("stroke");
 			}
 			else {
-				element.classList.add("stroke");
+				this.classList.add("stroke");
 			}
-		}
-	}
+
+	// Display the latest selected point in the right hand column
+	let newText = d3.select(this).attr("id");
+	let coords = document.getElementById("coord-list");
+
+	coords.innerHTML = newText;
 }
+
 
 // Implement function to add new points and set their ids
 function pointClick() {
