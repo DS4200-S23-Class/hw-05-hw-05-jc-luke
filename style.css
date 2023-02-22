@@ -1,29 +1,29 @@
 
-/* create foundation for multiple columns */
+/* Create foundation for multiple columns */
 * {
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-/* set font of page to arial */
+/* Set font of page to arial */
 body {
 	font-family: Arial;
 }
 
-/* class to center elements */
+/* Add class to center elements */
 .centered {
 	text-align: center;
 }
 
-/* class signifying whole extent of page */
+/* Add class signifying whole extent of page */
 .maincont {
 	margin-left: 0px;
 	margin-right: 0px;
 	width: 100%;
 }
 
-/* classes signifying left and right columns, respectively */
+/* Add classes signifying left and right columns, respectively */
 .lcol,
 .rcol {
 	display: inline;
@@ -39,7 +39,7 @@ body {
 	width: 40%;
 }
 
-/* clear floats after the columns */
+/* Clear floats after the columns */
 .row:after {
 	content: "";
 	display: table;
@@ -47,7 +47,7 @@ body {
 }
 
 
-/* tag styling the points of the graph */
+/* Add tag styling the points of the graph */
 .point {
 	fill: blue;
 }
@@ -61,7 +61,7 @@ body {
 	stroke-width: 2px;
 }
 
-/* tag styling the "Add point" button */
+/* Add tag styling the "Add point" button */
 button {
 	margin: 10px;
 }
@@ -70,4 +70,3 @@ button {
 .bar {
 	fill: mediumpurple;
 
-}
